@@ -7,11 +7,13 @@ internal static class WeaponDictionary
     public static List<Range> Distribution { get; set; } = new List<Range>();
     static WeaponDictionary()
     {
-        Weapons.Add("Stick", new Weapon("Stick", 1));
-        Weapons.Add("Sword", new Weapon("Sword", 5));
-        Weapons.Add("Axe", new Weapon("Axe", 10));
-        Weapons.Add("Mace", new Weapon("Mace", 15));
-        Weapons.Add("Spear", new Weapon("Spear", 20));
+        Weapons.Add("Stick", new Weapon("Stick", 1,1));
+        Weapons.Add("Sword", new Weapon("Sword", 5,10));
+        Weapons.Add("Axe", new Weapon("Axe", 10,10));
+        Weapons.Add("Mace", new Weapon("Mace", 15,10));
+        Weapons.Add("Spear", new Weapon("Spear", 20,10));
+        Weapons.Add("Wand", new Weapon("Wand", 100,50));
+        
     }
     public static Weapon GenerateRandomWeapon()
     {

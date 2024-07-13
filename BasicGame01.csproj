@@ -11,6 +11,13 @@
     <ImplicitUsings Include="System" />
     <!-- Add other namespaces as needed -->
     <ImplicitUsings Include="System.Text" />
+    <ImplicitUsings Include="System.IO" />
+    <ImplicitUsings Include="System.Collections.Generic" />
+    <ImplicitUsings Include="System.Linq" />
+    <ImplicitUsings Include="System.Threading.Tasks" />
+    <ImplicitUsings Include="System.Diagnostics" />
+    <ImplicitUsings Include="System.Reflection" />
+    
 
   </ItemGroup>
   

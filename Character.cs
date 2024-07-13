@@ -15,14 +15,18 @@ internal class Character
     {
         get
         {
-            return EquippedArmor.Values.Sum(a => a.Defense);
+            //for all properties of inventory, if the type is armor,  sum it's defense
+            return Inventory.GetType().GetProperties().Where(p => p.PropertyType == typeof(Armor)).Sum(p => ((Armor?)p.GetValue(Inventory))?.Defense ?? 0);
+
         }
     }
     public int WeaponValue
     {
         get
         {
-            return EquippedWeapons.Values.Sum(w => w.Damage);
+            //for all properties of inventory, if the type is weapon,  sum it's damage
+            return Inventory.GetType().GetProperties().Where(p => p.PropertyType == typeof(Weapon)).Sum(p => ((Weapon?)p.GetValue(Inventory))?.Damage ?? 0);
+
         }
     }
     public int TotalDamage
@@ -44,27 +48,55 @@ internal class Character
         Name = "Unknown";
         Life = 100;
     }
-    public virtual string PrintStatus()
+    public virtual string PrintStatus(bool bDetailed = false)
     {
         var str = new System.Text.StringBuilder();
         str.AppendLine($"{Name} has {Life} life and has base damage of {BaseDamage}.");
         //Print all items in inventory
-        foreach (var item in Inventory.Loot)
+        if (bDetailed)
         {
-            str.AppendLine($"{item.Value} {item.Key.Name}, Value: {item.Key.Value}");
+            str.AppendLine("Inventory:");
+            str.AppendLine("----------");
+            foreach (var item in Inventory.Loot)
+            {
+                str.AppendLine($"{item.Value} {item.Key.Name}, Value: {item.Key.Value}");
+            }
+            str.AppendLine("----------");
+
         }
         //Print total loot value
         str.AppendLine($"Total Loot Value: {TotalLootValue}");
         
-
-
-        foreach (var armor in EquippedArmor)
+        if(bDetailed)
         {
-            str.AppendLine($"Armor: {armor.Value.Name} - {armor.Value.Defense} points of defense on {armor.Key}");
-        }
-        foreach (var weapon in EquippedWeapons)
-        {
-            str.AppendLine($"Weapon: {weapon.Value.Name} - {weapon.Value.Damage} points of damage");
+            str.AppendLine("Armor:");
+            str.AppendLine("----------");
+
+            //foreach property of inventory, if it's type is armor, print it's name and defense
+            foreach (var property in Inventory.GetType().GetProperties())
+            {
+                if (property.PropertyType == typeof(Armor))
+                {
+                    var armor = (Armor?)property.GetValue(Inventory);
+                    str.AppendLine($"{property.Name}:{armor?.Name} - {armor?.Defense} points of defense");
+                }
+            }
+            str.AppendLine("----------");
+            str.AppendLine("Weapons:");
+            str.AppendLine("----------");
+
+            //foreach property of inventory, if it's type is weapon, print it's name and damage
+            foreach (var property in Inventory.GetType().GetProperties())
+            {
+                if (property.PropertyType == typeof(Weapon))
+                {
+                    var weapon = (Weapon?)property.GetValue(Inventory);
+                    str.AppendLine($" {property.Name}:{weapon?.Name} - {weapon?.Damage} points of damage");
+                }
+            }
+            str.AppendLine("----------");
+            
+
         }
 
         str.AppendLine($"Total Armor Value: {ArmorValue}");
@@ -76,4 +108,8 @@ internal class Character
 
     }   
 
+    public bool IsDead()
+    {
+        return Life <= 0;
+    }
 }

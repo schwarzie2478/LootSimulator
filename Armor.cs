@@ -1,15 +1,13 @@
 // See https://aka.ms/new-console-template for more information
 //Game Loop
-public class Armor
+public class Armor: Loot
 {
-    public string Name { get; set; }
     public int Defense { get; set; }
     public string BodyPart { get; set; }
-    public Armor(string name, int defense, string bodyPart)
+    public Armor(string name,int value, int defense, string bodyPart):base(name,value,LootType.Armor)
     {
-        Name = name;
         Defense = defense;
         BodyPart = bodyPart;
     }
-    public Armor():this("Cloth",1,"Chest"){}
+    public Armor():this("Naked",0,0,"Chest"){}
 }

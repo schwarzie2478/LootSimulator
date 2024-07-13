@@ -12,10 +12,9 @@ internal class Player : Character
         BaseDamage = 5;
         Level = 1;
         Experience = 0;
-        var weapon = WeaponDictionary.GenerateRandomWeapon();
-        var armor = ArmorDictionary.GenerateRandomArmor();
-        EquippedWeapons.Add(weapon.Name, weapon);
-        EquippedArmor.Add(armor.Name, armor);
+        Inventory.AddArmor(ArmorDictionary.GenerateRandomArmor());
+        Inventory.AddWeapon(WeaponDictionary.GenerateRandomWeapon(), "Right Hand");
+
     }
     public Player() : this("Unknown", 100) { }
 

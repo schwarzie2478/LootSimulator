@@ -4,10 +4,21 @@ public class Loot
 {
     public string Name { get; set; }
     public int Value { get; set; }
-    public Loot(string name, int value)
+    public LootType Type { get; set; }
+    public Loot(string name, int value, LootType type)
     {
         Name = name;
         Value = value;
-    }
-    public Loot():this("Garbage",0){}
+        Type = type;
+    }   
+    public Loot():this("Garbage",0,LootType.Junk){}
+}
+public enum LootType
+{
+    Weapon,
+    Armor,
+    Consumable,
+    Junk,
+    Material,
+    Money
 }

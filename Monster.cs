@@ -6,16 +6,17 @@ internal class Monster: Character
     public LootDropList LootDropList { get; private set; }
     
 
-    public Monster(string name, int life, LootDropList lootDropList, Dictionary<string, Armor> equippedArmor, Dictionary<string, Weapon> equippedWeapons)
+    public Monster(string name, int life, LootDropList lootDropList)
     {
         Name = name;
         Life = life;
         BaseDamage = Life / 5;
-        EquippedArmor = equippedArmor;
-        EquippedWeapons = equippedWeapons;
+        Inventory = new Inventory();
         LootDropList = lootDropList;
     }   
-    public Monster():this("Unknown",100,new LootDropList(),new Dictionary<string, Armor>(),new Dictionary<string, Weapon>()){}
+    public Monster():this("Unknown",100,new LootDropList())
+    {
+    }
  }
 
 

@@ -1,14 +1,14 @@
 // See https://aka.ms/new-console-template for more information
 //Game Loop
-public class Weapon
+public class Weapon: Loot
 {
-    public string Name { get; set; }
     public int Damage { get; set; }
-    public Weapon(string name, int damage)
+    public Weapon(string name, int value,int damage):base(name,value,LootType.Weapon)
     {
-        Name = name;
         Damage = damage;
     }
-    public Weapon():this("Stick",1){}
+
+
+    public Weapon():this("None",0,0){}
 }
 

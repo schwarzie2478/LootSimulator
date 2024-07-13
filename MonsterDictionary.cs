@@ -8,11 +8,11 @@ internal static class MonsterDictionary
     internal static List<Range> Distribution { get; set; } = new List<Range>();
     static MonsterDictionary() => Monsters = new Dictionary<string, Monster>
         {
-            { "Slime", new Monster("Slime", 5, new LootDropList(),new Dictionary<string, Armor>(), new Dictionary<string, Weapon>()) },
-            { "Goblin", new Monster("Goblin", 10, new LootDropList(),new Dictionary<string, Armor>(), new Dictionary<string, Weapon>()) },
-            { "Orc", new Monster("Orc", 20, new LootDropList(),new Dictionary<string, Armor>(), new Dictionary<string, Weapon>()) },
-            { "Troll", new Monster("Troll", 30, new LootDropList(),new Dictionary<string, Armor>(), new Dictionary<string, Weapon>()) },
-            { "Dragon", new Monster("Dragon", 50, new LootDropList(),new Dictionary<string, Armor>(), new Dictionary<string, Weapon>()) }
+            { "Slime", new Monster("Slime", 5, new LootDropList()) },
+            { "Goblin", new Monster("Goblin", 10, new LootDropList()) },
+            { "Orc", new Monster("Orc", 20, new LootDropList()) },
+            { "Troll", new Monster("Troll", 30, new LootDropList()) },
+            { "Dragon", new Monster("Dragon", 50, new LootDropList()) }
         };
     public static Monster GenerateRandomMonster(int level)
     {
@@ -29,48 +29,58 @@ internal static class MonsterDictionary
         var random = new Random();
         var value = random.Next(0,Distribution.Last().End);
         var monsterTemplate = Monsters[Distribution.First(d => d.Start <= value && d.End >= value).Name];
-        var monster = new Monster(monsterTemplate.Name, monsterTemplate.Life, monsterTemplate.LootDropList, monsterTemplate.EquippedArmor, monsterTemplate.EquippedWeapons);
+        var monster = new Monster(monsterTemplate.Name, monsterTemplate.Life, monsterTemplate.LootDropList);
         monster.Life += (level-1) * 10;
+        monster.BaseDamage += (level-1) * monster.BaseDamage;
         //for every Level, generate a random loot
         for(int i = 0; i < level; i++)
         {
             var loot = LootDictionary.GenerateRandomLoot();
-            if(monster.LootDropList.Loots.ContainsKey(loot))
-            {
-                monster.LootDropList.Loots[loot]++;
-            }
-            else
-            {
-                monster.LootDropList.Loots.Add(loot, 1);
-            }
+            AddInsertLoot(monster, loot);
         }
+        //generate an armor and weapon and add to lootdroplist
+        AddInsertLoot(monster, ArmorDictionary.GenerateRandomArmor());
+        AddInsertLoot(monster, WeaponDictionary.GenerateRandomWeapon());
+
         //base on monster live versus player hitpoints, generate weapons and armor
         if(monster.Life > 50)
         {
-            monster.EquippedWeapons["Claws"] =  new Weapon("Claws", 10);
+            monster.Inventory.LeftHand =  new Weapon("Claws", 5,10);
         }
         else if(monster.Life > 30)
         {
-            monster.EquippedWeapons["Teeth"] = new Weapon("Teeth", 5);
+            monster.Inventory.LeftHand = new Weapon("Teeth",5, 5);
         }
         else
         {
-            monster.EquippedWeapons["Fists"] = new Weapon("Fists", 2);
+            monster.Inventory.LeftHand = new Weapon("Fists",1, 2);
         }
         if(monster.Life > 50)
         {
-            monster.EquippedArmor["Scales"] = new Armor("Scales", 10,"Chest");
+            monster.Inventory.AddArmor (new Armor("Scales",20, 10,"Chest"));
         }
         else if(monster.Life > 30)
         {
-            monster.EquippedArmor["Hide"] =  new Armor("Hide", 5,"Chest");
+            monster.Inventory.AddArmor(new Armor("Hide",20,  5,"Chest"));
         }
         else
         {
-            monster.EquippedArmor["Skin"] = new Armor("Skin", 2,"Chest");
+            monster.Inventory.AddArmor(new Armor("Skin", 5, 2,"Chest"));
         }
-        System.Console.WriteLine($"A {monster.Name} appears! ");
+        System.Console.WriteLine($"A {monster.Name} appears! ", System.ConsoleColor.Red);
         System.Console.WriteLine(monster.PrintStatus());
         return monster;
+    }
+
+    private static void AddInsertLoot(Monster monster, Loot loot)
+    {
+        if (monster.LootDropList.Loots.ContainsKey(loot))
+        {
+            monster.LootDropList.Loots[loot]++;
+        }
+        else
+        {
+            monster.LootDropList.Loots.Add(loot, 1);
+        }
     }
 }

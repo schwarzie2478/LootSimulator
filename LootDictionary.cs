@@ -7,42 +7,51 @@ internal static class LootDictionary
 
     static LootDictionary()
     {
-        Loots.Add("Gold", new Loot("Gold", 1000));
-        Loots.Add("Silver", new Loot("Silver", 100));    
-        Loots.Add("Bronze", new Loot("Bronze", 10));
-        Loots.Add("Copper", new Loot("Copper", 10));
-        Loots.Add("Iron", new Loot("Iron", 5));
-        Loots.Add("Steel", new Loot("Steel", 20));
-        Loots.Add("Wood", new Loot("Wood", 3));
-        Loots.Add("Stone", new Loot("Stone", 2));
-        Loots.Add("Bone", new Loot("Bone", 3));
-        Loots.Add("Leather", new Loot("Leather", 3));
-        Loots.Add("Cloth", new Loot("Cloth", 1));
-        Loots.Add("Stick", new Loot("Stick", 1));
-        Loots.Add("Rock", new Loot("Rock", 1));
-        Loots.Add("Twig", new Loot("Twig", 1));
-        Loots.Add("Pebble", new Loot("Pebble", 1));
-        Loots.Add("Health Potion", new Loot("Health Potion", 10));
-        Loots.Add("Mana Potion", new Loot("Mana Potion", 20));
-        Loots.Add("Herb", new Loot("Herb", 2));
-        Loots.Add("Root", new Loot("Root", 2));
-        Loots.Add("Mushroom", new Loot("Mushroom", 2));
-        Loots.Add("Berry", new Loot("Berry", 1));
-        Loots.Add("Seed", new Loot("Seed", 1));
-        Loots.Add("Nut", new Loot("Nut", 2));
-        Loots.Add("Fruit", new Loot("Fruit", 3));
-        Loots.Add("Vegetable", new Loot("Vegetable", 3));
-        Loots.Add("Grain", new Loot("Grain", 3));
-        Loots.Add("Meat", new Loot("Meat", 5));
-        Loots.Add("Fish", new Loot("Fish", 3));
-        Loots.Add("Egg", new Loot("Egg", 3));
-        Loots.Add("Dairy", new Loot("Dairy", 3));
-        Loots.Add("Oil", new Loot("Oil", 10));
-        Loots.Add("Salt", new Loot("Salt", 2));
-        Loots.Add("Sugar", new Loot("Sugar", 4));
-        Loots.Add("Spice", new Loot("Spice", 10));
-        
+        Loots.Add("Gold", new Loot("Gold", 1000, LootType.Money));
+        Loots.Add("Silver", new Loot("Silver", 100, LootType.Money));    
+        Loots.Add("Bronze", new Loot("Bronze", 10, LootType.Money));
+        Loots.Add("Copper", new Loot("Copper", 10, LootType.Money));
+        Loots.Add("Iron", new Loot("Iron", 5, LootType.Material));
+        Loots.Add("Steel", new Loot("Steel", 20, LootType.Material));
+        Loots.Add("Wood", new Loot("Wood", 3, LootType.Material));
+        Loots.Add("Stone", new Loot("Stone", 2, LootType.Material));
+        Loots.Add("Bone", new Loot("Bone", 3, LootType.Material));
+        Loots.Add("Leather", new Loot("Leather", 3, LootType.Material));
+        Loots.Add("Cloth", new Loot("Cloth", 1, LootType.Material));
+        Loots.Add("Rock", new Loot("Rock", 1, LootType.Material));
+        Loots.Add("Twig", new Loot("Twig", 1, LootType.Material));
+        Loots.Add("Pebble", new Loot("Pebble", 1,   LootType.Material));
+        Loots.Add("Health Potion", new Loot("Health Potion", 10, LootType.Consumable));
+        Loots.Add("Mana Potion", new Loot("Mana Potion", 20, LootType.Consumable));
+        Loots.Add("Herb", new Loot("Herb", 2, LootType.Consumable));
+        Loots.Add("Root", new Loot("Root", 2, LootType.Material));
+        Loots.Add("Mushroom", new Loot("Mushroom", 2, LootType.Consumable));
+        Loots.Add("Berry", new Loot("Berry", 1, LootType.Consumable));
+        Loots.Add("Seed", new Loot("Seed", 1, LootType.Material));
+        Loots.Add("Nut", new Loot("Nut", 2  , LootType.Consumable));
+        Loots.Add("Fruit", new Loot("Fruit", 3  , LootType.Consumable));
+        Loots.Add("Vegetable", new Loot("Vegetable", 3  , LootType.Consumable));
+        Loots.Add("Grain", new Loot("Grain", 3  , LootType.Material));
+        Loots.Add("Meat", new Loot("Meat", 5, LootType.Consumable));
+        Loots.Add("Fish", new Loot("Fish", 3, LootType.Consumable));
+        Loots.Add("Egg", new Loot("Egg", 3, LootType.Consumable));
+        Loots.Add("Dairy", new Loot("Dairy", 3, LootType.Consumable));
+        Loots.Add("Oil", new Loot("Oil", 10, LootType.Material));
+        Loots.Add("Salt", new Loot("Salt", 2, LootType.Material));
+        Loots.Add("Sugar", new Loot("Sugar", 4, LootType.Material));
+        Loots.Add("Spice", new Loot("Spice", 10, LootType.Material));
+        //Add Dictornary of weapons to dictionary of loot with type loot
+        foreach(var weapon in WeaponDictionary.Weapons)
+        {
+            Loots.Add(weapon.Key, weapon.Value);
+        }
+        //Add Dictornary of armor to dictionary of loot with type loot
+        foreach(var armor in ArmorDictionary.Armors)
+        {
+            Loots.Add(armor.Key, armor.Value);
+        }
     }
+        
     public static Loot GenerateRandomLoot()
     {
         if( Distribution.Count == 0)

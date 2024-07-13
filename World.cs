@@ -1,16 +1,11 @@
 // See https://aka.ms/new-console-template for more information
-internal static class World
+internal static partial class World
 {
-    private static int _level = 1;
+    private static int _level = WorldStartLevel;
     public static int Level
     {
         get
         {
-            if ((Monsters.Where(m => m.Life <= 0).Count() / 3.0) >= _level)
-            {
-                _level++;
-                Console.WriteLine($"World Level up! Now level {_level}");
-            }
             return _level;
         }
         set
@@ -50,6 +45,28 @@ internal static class World
         //Pass all items from last monster to player
         foreach (var item in Monsters.Last().LootDropList.Loots)
         {
+            //if money type add to player money
+            if (item.Key.Type == LootType.Money)
+            {
+                //Repeat item.Value times
+                for (int i = 0; i < item.Value; i++)
+                {
+                    Player.Inventory.AddMoney(item.Key);
+                }
+
+                continue;
+            }
+            //Auto equip armor and weapon
+            if (item.Key is Armor armor)
+            {
+                Player.Inventory.AddArmor(armor);
+                continue;
+            }
+            if (item.Key is Weapon weapon)
+            {
+                Player.Inventory.AddWeapon(weapon, "RightHand");
+                continue;
+            }
             for (int i = 0; i < item.Value; i++)
             {
                 if (Player.Inventory.Loot.ContainsKey(item.Key))
@@ -66,7 +83,7 @@ internal static class World
         foreach (var item in Monsters.Last().EquippedArmor)
         {
             Player.EquippedArmor.Clear();
-            Player.EquippedArmor[item.Key] =  item.Value;
+            Player.EquippedArmor[item.Key] = item.Value;
         }
         foreach (var item in Monsters.Last().EquippedWeapons)
         {
@@ -80,6 +97,15 @@ internal static class World
     {
         return Monsters.All(m => m.Life <= 0);
     }
+    public static void DoBattle()
+    {
+        var playerDamage = World.Player.TotalDamage - World.NextMonster().ArmorValue;
+        var monsterDamage = World.NextMonster().TotalDamage - World.Player.ArmorValue;
+        World.NextMonster().Life -= playerDamage > 0 ? playerDamage : 1;
+        World.Player.Life -= monsterDamage > 0 ? monsterDamage : 1;
+
+    }
 }
+
 
 

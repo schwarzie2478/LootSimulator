@@ -2,15 +2,13 @@
 
 ##
 Next steps
-
-* Armor/Weapon loot
-* Armor equiping
-* Weapon equiping
-* Potions  drop/use
+* drop weapons and armor more
+* Potions/consumables  drop/use
+* add exploration and monster encounter ( remove next monster automatic)
 * Crafting
-* Movement
+* money accounting
 * Dall-E graphics --> ascii ?
-* Experience and leveling
+* player Experience and leveling
 * Movement/Locations/NPC
 
 
